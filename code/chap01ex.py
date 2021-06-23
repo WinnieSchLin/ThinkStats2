@@ -19,13 +19,15 @@ You can use nsfg.MakePregMap to make a dictionary that maps from each caseid to 
 '''
 
 
-def ReadFemPreg(dct_file='C:\Users\wschlin\Documents\GitHub\ThinkStats2\code\\2002FemPreg.dct',dat_file='C:\Users\wschlin\Documents\GitHub\ThinkStats2\code\\2002FemPreg.dat.gz'):
+def ReadFemPreg(dct_file='C:\Users\wschlin\Documents\GitHub\ThinkStats2\code\\2002FemResp.dct',dat_file='C:\Users\wschlin\Documents\GitHub\ThinkStats2\code\\2002FemResp.dat.gz'):
     dct = thinkstats2.ReadStataDct(dct_file)
     df = dct.ReadFixedWidth(dat_file, compression='gzip')
-    CleanFemPreg(df)
+    CleanFemResp(df)
     return df
 
-def CleanFemPreg(df):
+def CleanFemResp(df):
+    # what goes here? birthweight isn't a field in resp
+    # is this where pregnum goes??? 
     df.agepreg /= 100.0
     na_vals = [97, 98, 99]
     df.birthwgt_lb.replace(na_vals, np.nan, inplace=True)
@@ -37,13 +39,15 @@ def main(script):
 
     script: string script name
     """
-    preg = nsfg.ReadFemPreg()
-    preg.head()
+    resp = nsfg.ReadFemResp()
+    resp.head()
 
-    print(preg.pregnum.valuecounts())
-    pregmap = nsfg.MakePregMap(preg)
+    print(resp.pregnum.valuecounts())
+    respmap = nsfg.MakePregMap(resp)
+    # or are we supposed to do our own MakePregMap since this is supposed to be the equivalent of nsfg?
 
     print('%s: All tests passed.' % script)
+    # having the only output it comes with be 'All tests passed' is so frustrating. I could run the empty example problem and it would say "All tests passed".
 
 
 if __name__ == '__main__':
